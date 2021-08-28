@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:remember/models/my_exception.dart';
 
-import 'models/app_theme.dart';
+import './models/my_exception.dart';
+import './models/app_theme.dart';
+import './models/local_storage.dart';
 
 class Config with ChangeNotifier {
   //Singleton pattern
@@ -15,14 +17,49 @@ class Config with ChangeNotifier {
   bool onlyPrimaryWord = false;
   bool waitLongPressKey = false;
 
+  Future<bool> importFromLocal() async {
+    final fileName = 'config.json';
+    try {
+      final data = await Storage.read(fileName);
+      final Map<String, dynamic> extractedData = json.decode(data);
+      onlyPrimaryWord = extractedData['onlyPrimaryWord'];
+      waitLongPressKey = extractedData['onlyPrimaryWord'];
+      _selectedTheme = extractedData['selectedTheme'];
+      _currentUndarkTheme = extractedData['currentUndarkTheme'];
+    } catch (error) {
+      print('Could not read \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
+  Future<bool> exportToLocal() async {
+    final fileName = 'config.json';
+    try {
+      final mapConfig = {
+        'onlyPrimaryWord': onlyPrimaryWord,
+        'waitLongPressKey': waitLongPressKey,
+        'selectedTheme': _selectedTheme,
+        'currentUndarkTheme': _currentUndarkTheme,
+      };
+      final dataConfig = JsonEncoder.withIndent('\t').convert(mapConfig);
+      await Storage.write(fileName, dataConfig);
+      return true;
+    } catch (error) {
+      print('Could not write \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
   void toggleOnlyPrimaryWord() {
     onlyPrimaryWord = !onlyPrimaryWord;
     notifyListeners();
+    exportToLocal();
   }
 
   void toggleWaitLongPressKey() {
     waitLongPressKey = !waitLongPressKey;
     notifyListeners();
+    exportToLocal();
   }
 
   final List<AppTheme> _listAppTheme = [
@@ -104,6 +141,7 @@ class Config with ChangeNotifier {
       _selectedTheme = _currentUndarkTheme;
     }
     notifyListeners();
+    exportToLocal();
   }
 
   void changeTheme(int index) {
@@ -116,5 +154,6 @@ class Config with ChangeNotifier {
       _currentUndarkTheme = 1;
     }
     notifyListeners();
+    exportToLocal();
   }
 }

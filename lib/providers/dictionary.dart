@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/local_storage.dart';
 import '../models/index_controller.dart';
 import '../models/my_exception.dart';
 import '../config.dart';
@@ -28,7 +29,96 @@ class Dictionary with ChangeNotifier {
   bool isArchived(String id) =>
       _archives.indexWhere((vocab) => vocab.id == id) != -1;
 
-  Future<void> fetchAndSetData() async {
+  Future<void> loadData() async {
+    await importNonVocabsFromLocal();
+    final successful = await fetchAndSetData();
+    if (!successful) {
+      await importVocabsFromLocal();
+    } else {
+      exportVocabsToLocal();
+    }
+  }
+
+  Future<bool> importVocabsFromLocal() async {
+    final fileName = 'vocabularies.json';
+    try {
+      final data = await Storage.read(fileName);
+      final Map<String, dynamic> extractedData = json.decode(data);
+      extractedData
+          .forEach((key, value) => _vocabs.add(Vocabulary.fromMap(key, value)));
+      return true;
+    } catch (error) {
+      print('Could not read \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
+  Future<bool> importNonVocabsFromLocal() async {
+    final fileName = 'non_vocabs.json';
+    try {
+      final data = await Storage.read(fileName);
+      final Map<String, dynamic> extractedData = json.decode(data);
+      extractedData['archives'].forEach(
+          (key, value) => _archives.add(Vocabulary.fromMap(key, value)));
+      extractedData['waitAdd']
+          .forEach((_, value) => _waitForAddVocabs.add(value));
+      extractedData['waitUpd']
+          .forEach((_, value) => _waitForUpdateVocabs.add(value));
+      extractedData['waitDel']
+          .forEach((_, value) => _waitForDeleteVocabs.add(value));
+      return true;
+    } catch (error) {
+      print('Could not read \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
+  Future<bool> exportVocabsToLocal() async {
+    final fileName = 'vocabularies.json';
+    try {
+      final mapVocabs =
+          Map.fromIterable(_vocabs, key: (v) => v.id, value: (v) => v.toMap());
+      final dataVocabs = JsonEncoder.withIndent('\t').convert(mapVocabs);
+      await Storage.write(fileName, dataVocabs);
+      return true;
+    } catch (error) {
+      print('Could not write \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
+  Future<bool> exportNonVocabsToLocal() async {
+    final fileName = 'non_vocabs.json';
+    try {
+      final mapArchives = Map.fromIterable(_archives,
+          key: (v) => v.id, value: (v) => v.toMap());
+      final mapW4Add = Map.fromIterables(
+          List<String>.generate(_waitForAddVocabs.length, (i) => i.toString()),
+          _waitForAddVocabs);
+      final mapW4Upd = Map.fromIterables(
+          List<String>.generate(
+              _waitForUpdateVocabs.length, (i) => i.toString()),
+          _waitForUpdateVocabs);
+      final mapW4Del = Map.fromIterables(
+          List<String>.generate(
+              _waitForDeleteVocabs.length, (i) => i.toString()),
+          _waitForDeleteVocabs);
+      final mapNonVocabs = {
+        'archives': mapArchives,
+        'waitAdd': mapW4Add,
+        'waitUpd': mapW4Upd,
+        'waitDel': mapW4Del,
+      };
+      final dataNonVocabs = JsonEncoder.withIndent('\t').convert(mapNonVocabs);
+      await Storage.write('non_vocabs.json', dataNonVocabs);
+      return true;
+    } catch (error) {
+      print('Could not write \'$fileName\' <- ' + error.toString());
+    }
+    return false;
+  }
+
+  Future<bool> fetchAndSetData() async {
     final url = Uri.parse(Config.DOMAIN_DB + 'dictionary.json');
     try {
       final List<Vocabulary> loadedDict = [];
@@ -52,41 +142,43 @@ class Dictionary with ChangeNotifier {
       });
       // notifyListeners();
       print('fetched');
+      return true;
     } catch (error) {
       print(error);
     }
+    return false;
   }
 
   Future<void> syncWithServer() async {
-    // delete duplicate elements
-    _waitForAddVocabs = _waitForAddVocabs.toSet().toList();
-    _waitForDeleteVocabs = _waitForDeleteVocabs.toSet().toList();
-    _waitForUpdateVocabs = _waitForUpdateVocabs.toSet().toList();
-    // delete 'deleted elements'
-    int i = 0;
-    while (i < _waitForDeleteVocabs.length) {
-      final id = _waitForDeleteVocabs[i];
-      final j = _waitForAddVocabs.indexOf(id);
-      final k = _waitForUpdateVocabs.indexOf(id);
-      if (j != -1) {
-        _waitForAddVocabs.removeAt(j);
-        _waitForDeleteVocabs.removeAt(i);
-      }
-      if (k != -1) {
-        _waitForUpdateVocabs.removeAt(k);
-      }
-      i++;
-    }
-    // merge 'added element' vs. 'updated element'
-    i = 0;
-    while (i < _waitForAddVocabs.length) {
-      final id = _waitForAddVocabs[i];
-      final j = _waitForUpdateVocabs.indexOf(id);
-      if (j != -1) {
-        _waitForUpdateVocabs.removeAt(j);
-      }
-      i++;
-    }
+    // // delete duplicate elements
+    // _waitForAddVocabs = _waitForAddVocabs.toSet().toList();
+    // _waitForDeleteVocabs = _waitForDeleteVocabs.toSet().toList();
+    // _waitForUpdateVocabs = _waitForUpdateVocabs.toSet().toList();
+    // // delete 'deleted elements'
+    // int i = 0;
+    // while (i < _waitForDeleteVocabs.length) {
+    //   final id = _waitForDeleteVocabs[i];
+    //   final j = _waitForAddVocabs.indexOf(id);
+    //   final k = _waitForUpdateVocabs.indexOf(id);
+    //   if (j != -1) {
+    //     _waitForAddVocabs.removeAt(j);
+    //     _waitForDeleteVocabs.removeAt(i);
+    //   }
+    //   if (k != -1) {
+    //     _waitForUpdateVocabs.removeAt(k);
+    //   }
+    //   i++;
+    // }
+    // // merge 'added element' vs. 'updated element'
+    // i = 0;
+    // while (i < _waitForAddVocabs.length) {
+    //   final id = _waitForAddVocabs[i];
+    //   final j = _waitForUpdateVocabs.indexOf(id);
+    //   if (j != -1) {
+    //     _waitForUpdateVocabs.removeAt(j);
+    //   }
+    //   i++;
+    // }
 
     try {
       // ADD
@@ -135,6 +227,7 @@ class Dictionary with ChangeNotifier {
           throw MyException('Could not sync with server!');
         }
       }
+      exportNonVocabsToLocal();
       print('synced');
     } catch (error) {
       print(error);
@@ -154,7 +247,10 @@ class Dictionary with ChangeNotifier {
       String tempId = DateTime.now().toString();
       _vocabs.add(newVocab.copyWith(id: tempId));
       _waitForAddVocabs.add(tempId);
-      print('Could not add vocabulary to server: ' + error.toString());
+      exportNonVocabsToLocal();
+      print('Could not add vocabulary to server <- ' + error.toString());
+    } finally {
+      exportVocabsToLocal();
     }
   }
 
@@ -178,8 +274,13 @@ class Dictionary with ChangeNotifier {
         throw MyException('HTTP PATCH status code >= 400');
       }
     } catch (error) {
-      _waitForUpdateVocabs.add(id);
-      print('Could not update vocabulary to server: ' + error.toString());
+      if (!_waitForAddVocabs.contains(id)) {
+        _waitForUpdateVocabs.add(id);
+      }
+      exportNonVocabsToLocal();
+      print('Could not update vocabulary to server <- ' + error.toString());
+    } finally {
+      exportVocabsToLocal();
     }
   }
 
@@ -203,8 +304,15 @@ class Dictionary with ChangeNotifier {
         throw MyException('HTTP DELETE status code >= 400');
       }
     } catch (error) {
-      _waitForDeleteVocabs.add(id);
-      print('Could not delete vocabulary to server: ' + error.toString());
+      if (_waitForAddVocabs.contains(id)) {
+        _waitForAddVocabs.removeWhere((vocabId) => vocabId == id);
+      } else {
+        _waitForDeleteVocabs.add(id);
+      }
+      exportNonVocabsToLocal();
+      print('Could not delete vocabulary to server <- ' + error.toString());
+    } finally {
+      exportVocabsToLocal();
     }
   }
 
@@ -223,12 +331,14 @@ class Dictionary with ChangeNotifier {
         notifyListeners();
       }
     }
+    exportVocabsToLocal();
+    exportNonVocabsToLocal();
   }
 
   Vocabulary findById(String id) {
     return _vocabs.firstWhere((vocab) => vocab.id == id, orElse: () {
       return _archives.firstWhere((vocab) => vocab.id == id, orElse: () {
-        throw MyException('ID not found!');
+        throw MyException('ID not found! ($id)');
       });
     });
   }

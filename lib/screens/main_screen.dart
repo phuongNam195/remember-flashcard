@@ -23,11 +23,18 @@ class _MainScreenState extends State<MainScreen> {
   var _isLoaded = false;
 
   @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     // _focusNode = FocusNode();
     // FocusScope.of(context).requestFocus(_focusNode);
-    void loadData() async {
-      await Provider.of<Dictionary>(context, listen: false).fetchAndSetData();
+    void prepare() async {
+      await Provider.of<Config>(context, listen: false).importFromLocal();
+      await Provider.of<Dictionary>(context, listen: false).loadData();
       _indexManager = IndexController();
       setState(() {
         _isLoaded = true;
@@ -35,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     if (_isLoaded == false) {
-      loadData();
+      prepare();
 
       // _dictionary = Provider.of<Dictionary>(context);
       // _dictionary.fetchAndSetData().then((_) {
@@ -53,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     _focusNode.dispose();
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
   }
 

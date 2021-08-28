@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:remember/models/vocabulary.dart';
 import 'package:remember/providers/dictionary.dart';
@@ -22,6 +23,11 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
 
   var _edittedVocab = Vocabulary(id: '', en: '', vi: '');
   bool _isInit = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -119,33 +125,36 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
               key: _form,
               child: ListView(
                 children: [
-                  TextFormField(
-                    autofocus: true,
-                    initialValue: _edittedVocab.en,
-                    style: TextStyle(fontFamily: 'Sarabun', color: textColor),
-                    decoration: _inputDecoration('English'),
-                    cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_viFocusNode);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Can\'t be empty!';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _edittedVocab = Vocabulary(
-                        id: _edittedVocab.id,
-                        en: value!,
-                        vi: _edittedVocab.vi,
-                        en2: _edittedVocab.en2,
-                        vi2: _edittedVocab.vi2,
-                        extra: _edittedVocab.extra,
-                      );
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: TextFormField(
+                      autofocus: true,
+                      initialValue: _edittedVocab.en,
+                      style: TextStyle(fontFamily: 'Sarabun', color: textColor),
+                      decoration: _inputDecoration('English'),
+                      cursorColor:
+                          config.isDarkTheme ? Colors.amber : Colors.orange,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_viFocusNode);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Can\'t be empty!';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _edittedVocab = Vocabulary(
+                          id: _edittedVocab.id,
+                          en: value!,
+                          vi: _edittedVocab.vi,
+                          en2: _edittedVocab.en2,
+                          vi2: _edittedVocab.vi2,
+                          extra: _edittedVocab.extra,
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(height: 15),
                   TextFormField(

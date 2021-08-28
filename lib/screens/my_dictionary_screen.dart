@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/dictionary.dart';
@@ -82,6 +83,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
     final appbarColor = config.isDarkTheme
         ? Color(0xff1b1b38)
         : (_isArchiveDict ? Color(0xff5c3d2e) : null);
+
     return Scaffold(
         backgroundColor: config.isDarkTheme ? Color(0xff232245) : null,
         appBar: AppBar(
@@ -124,6 +126,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
             ? RefreshIndicator(
                 onRefresh: () async {
                   dictionary.fetchAndSetData();
+                  dictionary.syncWithServer();
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
