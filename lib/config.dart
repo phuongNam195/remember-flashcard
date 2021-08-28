@@ -15,16 +15,6 @@ class Config with ChangeNotifier {
   bool onlyPrimaryWord = false;
   bool waitLongPressKey = false;
 
-  void toggleOnlyPrimaryWord() {
-    onlyPrimaryWord = !onlyPrimaryWord;
-    notifyListeners();
-  }
-
-  void toggleWaitLongPressKey() {
-    waitLongPressKey = !waitLongPressKey;
-    notifyListeners();
-  }
-
   final List<AppTheme> _listAppTheme = [
     AppTheme(
         id: '01',
@@ -96,6 +86,16 @@ class Config with ChangeNotifier {
   bool get isDarkTheme =>
       _listAppTheme[_selectedTheme].textColor == Colors.white;
   bool get isDarkMode => _selectedTheme == 0;
+
+  void toggleOnlyPrimaryWord() {
+    onlyPrimaryWord = !onlyPrimaryWord;
+    notifyListeners();
+  }
+
+  void toggleWaitLongPressKey() {
+    waitLongPressKey = !waitLongPressKey;
+    notifyListeners();
+  }
 
   void toggleDarkMode() {
     if (_selectedTheme != 0) {

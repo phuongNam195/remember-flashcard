@@ -105,7 +105,6 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     print('main build');
-    dictionary.syncWithServer();
     return Scaffold(
       body: Stack(
         children: [

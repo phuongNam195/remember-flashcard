@@ -8,14 +8,12 @@ class VocabularyItem extends StatelessWidget {
   final String id;
   final String title;
   final Color textColor;
-  final bool isArchived;
   final Function? onChanged;
 
   VocabularyItem({
     required this.id,
     required this.title,
     required this.textColor,
-    this.isArchived = false,
     this.onChanged,
   });
 
@@ -66,25 +64,15 @@ class VocabularyItem extends StatelessWidget {
             ],
           ),
           background: Container(
-            color: Color(0xff3db2ff),
-            child: Icon(this.isArchived ? Icons.unarchive : Icons.archive,
-                color: Colors.white),
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 20),
-          ),
-          secondaryBackground: Container(
             color: Color(0xffff2442),
             child: Icon(Icons.delete, color: Colors.white),
             alignment: Alignment.centerRight,
             padding: EdgeInsets.only(right: 20),
           ),
-          direction: DismissDirection.horizontal,
+          direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             if (direction == DismissDirection.endToStart) {
               Provider.of<Dictionary>(context, listen: false).deleteVocab(id);
-            } else if (direction == DismissDirection.startToEnd) {
-              Provider.of<Dictionary>(context, listen: false)
-                  .toggleArchived(id);
             }
           },
           confirmDismiss: (direction) async {

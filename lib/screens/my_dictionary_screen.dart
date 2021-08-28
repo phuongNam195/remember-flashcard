@@ -15,7 +15,6 @@ class MyDictionaryScreen extends StatefulWidget {
 
 class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   late final Dictionary dictionary;
-  bool _isArchiveDict = false;
   bool _isLoaded = false;
   // final ScrollController controller = ScrollController();
   // final perPage = 20;
@@ -32,15 +31,10 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   void didChangeDependencies() {
     if (!_isLoaded) {
       dictionary = Provider.of<Dictionary>(context, listen: false);
-      final argument = ModalRoute.of(context)!.settings.arguments;
-      if (argument != null) {
-        _isArchiveDict = argument as bool;
-      }
 
       void loadData() async {
         await Future.delayed(Duration(milliseconds: 200));
         await dictionary.fetchAndSetData();
-        dictionary.syncWithServer();
         setState(() {
           _isLoaded = true;
         });
@@ -79,15 +73,12 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context, listen: false);
-    final appbarColor = config.isDarkTheme
-        ? Color(0xff1b1b38)
-        : (_isArchiveDict ? Color(0xff5c3d2e) : null);
     return Scaffold(
         backgroundColor: config.isDarkTheme ? Color(0xff232245) : null,
         appBar: AppBar(
-          backgroundColor: appbarColor,
+          backgroundColor: config.isDarkTheme ? Color(0xff1b1b38) : null,
           title: Text(
-            _isArchiveDict ? 'Archive' : 'My Dictionary',
+            'My Dictionary',
             style: TextStyle(fontFamily: 'Sarabun'),
           ),
           leading: IconButton(
@@ -100,25 +91,23 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
               Navigator.of(context).pop();
             },
           ),
-          actions: _isArchiveDict
-              ? null
-              : [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(EditVocabularyScreen.routeName)
-                            .then((isChanged) {
-                          if (isChanged as bool) {
-                            setState(() {});
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(EditVocabularyScreen.routeName)
+                      .then((isChanged) {
+                    if (isChanged as bool) {
+                      setState(() {});
+                    }
+                  });
+                },
+              ),
+            ),
+          ],
         ),
         body: _isLoaded
             ? RefreshIndicator(
@@ -128,7 +117,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Consumer<Dictionary>(builder: (_, dict, ch) {
-                    final list = _isArchiveDict ? dict.archives : dict.vocabs;
+                    final list = dict.vocabs;
                     if (list.isEmpty)
                       return Center(
                           child: Text(
@@ -150,7 +139,6 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                               id: list[i].id,
                               title: list[i].en,
                               textColor: config.theme.textColor,
-                              isArchived: _isArchiveDict,
                               onChanged: () {
                                 setState(() {});
                               },

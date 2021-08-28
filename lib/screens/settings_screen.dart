@@ -143,18 +143,6 @@ class SettingsScreen extends StatelessWidget {
                         },
                       ),
                       SettingItem(
-                        title: 'Archive',
-                        color: textColor,
-                        leadingIcon: Icons.inventory_2,
-                        leadingColor: Color(0xff5c3d2e),
-                        type: SettingType.navigate,
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              MyDictionaryScreen.routeName,
-                              arguments: true);
-                        },
-                      ),
-                      SettingItem(
                           title: 'Only primary word',
                           color: textColor,
                           leadingIcon: Icons.translate,
