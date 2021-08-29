@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => Config()),
       ],
       child: MaterialApp(
+        title: 'Remember',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Raleway',

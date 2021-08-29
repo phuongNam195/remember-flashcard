@@ -87,141 +87,146 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     print('main build');
-    return Scaffold(
-      body: Stack(
-        children: [
-          GestureDetector(
-            onTap: () => nextVocab(),
-            child: RawKeyboardListener(
-              autofocus: true,
-              focusNode: _focusNode,
-              onKey: (event) {
-                if (config.waitLongPressKey == false) {
-                  if (event is RawKeyDownEvent) {
-                    if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
-                        event.isKeyPressed(LogicalKeyboardKey.enter) ||
-                        event.isKeyPressed(LogicalKeyboardKey.space)) {
-                      nextVocab();
-                    } else if (event
-                        .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-                      prevVocab();
-                    } else if (event.isKeyPressed(LogicalKeyboardKey.keyS) ||
-                        event.isKeyPressed(LogicalKeyboardKey.escape)) {
-                      goToSettings();
-                    } else if (event.isKeyPressed(LogicalKeyboardKey.keyT)) {
-                      pickTheme();
+    return Title(
+      color: Colors.blue,
+      title: 'Remember',
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GestureDetector(
+              onTap: () => nextVocab(),
+              child: RawKeyboardListener(
+                autofocus: true,
+                focusNode: _focusNode,
+                onKey: (event) {
+                  if (config.waitLongPressKey == false) {
+                    if (event is RawKeyDownEvent) {
+                      if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
+                          event.isKeyPressed(LogicalKeyboardKey.enter) ||
+                          event.isKeyPressed(LogicalKeyboardKey.space)) {
+                        nextVocab();
+                      } else if (event
+                          .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+                        prevVocab();
+                      } else if (event.isKeyPressed(LogicalKeyboardKey.keyS) ||
+                          event.isKeyPressed(LogicalKeyboardKey.escape)) {
+                        goToSettings();
+                      } else if (event.isKeyPressed(LogicalKeyboardKey.keyT)) {
+                        pickTheme();
+                      }
+                    }
+                  } else {
+                    if (event is RawKeyUpEvent) {
+                      if (event.physicalKey == PhysicalKeyboardKey.arrowRight ||
+                          event.physicalKey == PhysicalKeyboardKey.enter ||
+                          event.physicalKey == PhysicalKeyboardKey.space) {
+                        nextVocab();
+                      } else if (event.physicalKey ==
+                          PhysicalKeyboardKey.arrowLeft) {
+                        prevVocab();
+                      } else if (event.physicalKey ==
+                          PhysicalKeyboardKey.keyT) {
+                        pickTheme();
+                      }
                     }
                   }
-                } else {
-                  if (event is RawKeyUpEvent) {
-                    if (event.physicalKey == PhysicalKeyboardKey.arrowRight ||
-                        event.physicalKey == PhysicalKeyboardKey.enter ||
-                        event.physicalKey == PhysicalKeyboardKey.space) {
-                      nextVocab();
-                    } else if (event.physicalKey ==
-                        PhysicalKeyboardKey.arrowLeft) {
-                      prevVocab();
-                    } else if (event.physicalKey == PhysicalKeyboardKey.keyT) {
-                      pickTheme();
-                    }
-                  }
-                }
-              },
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  color: config.theme.solid,
-                  gradient: config.theme.gradient,
-                  image: config.theme.isImage
-                      ? DecorationImage(
-                          image: NetworkImage(config.theme.imageUrl!),
-                          fit: BoxFit.cover)
-                      : null,
-                ),
-                child: _isLoaded
-                    ? Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: dictionary.vocabs.isEmpty
-                            ? Center(
-                                child: Text(
-                                'None',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline1!
-                                    .copyWith(
-                                      color: config.theme.textColor,
-                                    ),
-                              ))
-                            : VocabularyDisplay(
-                                dictionary.at(_indexManager.value),
-                                config.theme.textColor))
-                    : Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          'loading...',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                  color:
-                                      config.theme.textColor.withOpacity(0.25)),
-                        )),
-              ),
-            ),
-          ),
-          Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: GestureDetector(
-                  child: Icon(
-                    Icons.nightlight,
-                    color: config.onlyPrimaryWord
-                        ? Colors.transparent
-                        : config.theme.textColor.withOpacity(0.3),
-                    size: 30,
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: config.theme.solid,
+                    gradient: config.theme.gradient,
+                    image: config.theme.isImage
+                        ? DecorationImage(
+                            image: NetworkImage(config.theme.imageUrl!),
+                            fit: BoxFit.cover)
+                        : null,
                   ),
-                  onTap: () {
-                    config.toggleDarkMode();
-                  },
-                  onLongPress: () => pickTheme(),
+                  child: _isLoaded
+                      ? Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: dictionary.vocabs.isEmpty
+                              ? Center(
+                                  child: Text(
+                                  'None',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .copyWith(
+                                        color: config.theme.textColor,
+                                      ),
+                                ))
+                              : VocabularyDisplay(
+                                  dictionary.at(_indexManager.value),
+                                  config.theme.textColor))
+                      : Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            'loading...',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(
+                                    color: config.theme.textColor
+                                        .withOpacity(0.25)),
+                          )),
                 ),
-              )),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: GestureDetector(
-              onDoubleTap: () {
-                prevVocab();
-              },
-              child: Container(
-                color: Colors.transparent,
-                height: 37,
-                width: 37,
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: GestureDetector(
-              onDoubleTap: () => goToSettings(),
-              child: Container(
-                color: Colors.transparent,
-                height: 37,
-                width: 37,
-              ),
-            ),
-          ),
-          if (_isBacked && !config.onlyPrimaryWord)
             Align(
-              alignment: Alignment(0, 0.75),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: config.theme.textColor.withOpacity(0.3),
-                size: 40,
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: GestureDetector(
+                    child: Icon(
+                      Icons.nightlight,
+                      color: config.onlyPrimaryWord
+                          ? Colors.transparent
+                          : config.theme.textColor.withOpacity(0.3),
+                      size: 30,
+                    ),
+                    onTap: () {
+                      config.toggleDarkMode();
+                    },
+                    onLongPress: () => pickTheme(),
+                  ),
+                )),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: GestureDetector(
+                onDoubleTap: () {
+                  prevVocab();
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  height: 37,
+                  width: 37,
+                ),
               ),
             ),
-        ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: GestureDetector(
+                onDoubleTap: () => goToSettings(),
+                child: Container(
+                  color: Colors.transparent,
+                  height: 37,
+                  width: 37,
+                ),
+              ),
+            ),
+            if (_isBacked && !config.onlyPrimaryWord)
+              Align(
+                alignment: Alignment(0, 0.75),
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: config.theme.textColor.withOpacity(0.3),
+                  size: 40,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
