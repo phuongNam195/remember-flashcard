@@ -24,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void didChangeDependencies() {
-    // _focusNode = FocusNode();
     // FocusScope.of(context).requestFocus(_focusNode);
     void loadData() async {
       await Provider.of<Dictionary>(context, listen: false).fetchAndSetData();
@@ -36,15 +35,6 @@ class _MainScreenState extends State<MainScreen> {
 
     if (_isLoaded == false) {
       loadData();
-
-      // _dictionary = Provider.of<Dictionary>(context);
-      // _dictionary.fetchAndSetData().then((_) {
-      //   _indexManager = IndexController();
-      //   _indexManager.next();
-      //   setState(() {
-      //     _isLoaded = true;
-      //   });
-      // });
     }
 
     super.didChangeDependencies();
@@ -75,20 +65,6 @@ class _MainScreenState extends State<MainScreen> {
           _isBacked = true;
         });
 
-        // Future<void> _dem() async {
-        //   while (_time < 20) {
-        //     Future.delayed(const Duration(milliseconds: 50)).then((_) {
-        //       _time += 1;
-        //     });
-        //   }
-        //   _time = 0;
-        //   setState(() {
-        //     _isBacked = false;
-        //   });
-        // }
-
-        // _dem();
-
         Future.delayed(Duration(milliseconds: 400)).then((_) {
           setState(() {
             _isBacked = false;
@@ -104,6 +80,12 @@ class _MainScreenState extends State<MainScreen> {
           barrierColor: Colors.black26);
     }
 
+    void goToSettings() {
+      _focusNode.unfocus();
+      Navigator.of(context).pushNamed(SettingsScreen.routeName);
+      FocusScope.of(context).requestFocus(_focusNode);
+    }
+
     print('main build');
     return Scaffold(
       body: Stack(
@@ -113,16 +95,19 @@ class _MainScreenState extends State<MainScreen> {
             child: RawKeyboardListener(
               autofocus: true,
               focusNode: _focusNode,
-              onKey: (RawKeyEvent event) {
+              onKey: (event) {
                 if (config.waitLongPressKey == false) {
                   if (event is RawKeyDownEvent) {
                     if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
                         event.isKeyPressed(LogicalKeyboardKey.enter) ||
                         event.isKeyPressed(LogicalKeyboardKey.space)) {
                       nextVocab();
-                    }
-                    if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+                    } else if (event
+                        .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
                       prevVocab();
+                    } else if (event.isKeyPressed(LogicalKeyboardKey.keyS) ||
+                        event.isKeyPressed(LogicalKeyboardKey.escape)) {
+                      goToSettings();
                     } else if (event.isKeyPressed(LogicalKeyboardKey.keyT)) {
                       pickTheme();
                     }
@@ -219,11 +204,7 @@ class _MainScreenState extends State<MainScreen> {
           Align(
             alignment: Alignment.bottomRight,
             child: GestureDetector(
-              onDoubleTap: () {
-                _focusNode.unfocus();
-                Navigator.of(context).pushNamed(SettingsScreen.routeName);
-                FocusScope.of(context).requestFocus(_focusNode);
-              },
+              onDoubleTap: () => goToSettings(),
               child: Container(
                 color: Colors.transparent,
                 height: 37,

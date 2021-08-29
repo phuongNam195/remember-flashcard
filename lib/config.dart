@@ -82,9 +82,7 @@ class Config with ChangeNotifier {
   AppTheme get theme => _listAppTheme[_selectedTheme];
   List<AppTheme> get allThemes => [..._listAppTheme];
   int get currentThemeIndex => _selectedTheme;
-  // bool get isLightTheme => _listAppTheme[_selectedTheme].textColor == Colors.black;
-  bool get isDarkTheme =>
-      _listAppTheme[_selectedTheme].textColor == Colors.white;
+  // bool get isDarkTheme => _listAppTheme[_selectedTheme].textColor == Colors.white;
   bool get isDarkMode => _selectedTheme == 0;
 
   void toggleOnlyPrimaryWord() {

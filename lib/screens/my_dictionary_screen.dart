@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/dictionary.dart';
@@ -15,17 +16,8 @@ class MyDictionaryScreen extends StatefulWidget {
 
 class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   late final Dictionary dictionary;
+  final FocusNode _focusNode = FocusNode();
   bool _isLoaded = false;
-  // final ScrollController controller = ScrollController();
-  // final perPage = 20;
-  // late int currLength;
-
-  @override
-  void initState() {
-    // currLength = perPage;
-    // controller.addListener(_scrollListener);
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -41,14 +33,6 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
       }
 
       loadData();
-
-      // Future.delayed(Duration(milliseconds: 300)).then((_) {
-      //   Provider.of<Dictionary>(context, listen: false).fetchAndSetData();
-      // }).then((_) {
-      //   setState(() {
-      //     _isLoaded = true;
-      //   });
-      // });
     }
 
     super.didChangeDependencies();
@@ -56,27 +40,27 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
 
   @override
   void dispose() {
-    // controller.removeListener(_scrollListener);
+    _focusNode.dispose();
     super.dispose();
   }
-
-  // void _scrollListener() {
-  //   if (controller.position.extentAfter < 200) {
-  //     final dictionary = Dictionary();
-  //     setState(() {
-  //       currLength += perPage;
-  //       if (currLength > dictionary.length) currLength = dictionary.length;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context, listen: false);
-    return Scaffold(
-        backgroundColor: config.isDarkTheme ? Color(0xff232245) : null,
+    return RawKeyboardListener(
+      autofocus: true,
+      focusNode: _focusNode,
+      onKey: (event) {
+        if (event is RawKeyDownEvent) {
+          if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: config.isDarkMode ? Color(0xff232245) : null,
         appBar: AppBar(
-          backgroundColor: config.isDarkTheme ? Color(0xff1b1b38) : null,
+          backgroundColor: config.isDarkMode ? Color(0xff1b1b38) : null,
           title: Text(
             'My Dictionary',
             style: TextStyle(fontFamily: 'Sarabun'),
@@ -97,6 +81,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
               child: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
+                  _focusNode.unfocus();
                   Navigator.of(context)
                       .pushNamed(EditVocabularyScreen.routeName)
                       .then((isChanged) {
@@ -104,6 +89,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                       setState(() {});
                     }
                   });
+                  FocusScope.of(context).requestFocus(_focusNode);
                 },
               ),
             ),
@@ -150,6 +136,8 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
               )
             : Center(
                 child: CircularProgressIndicator(),
-              ));
+              ),
+      ),
+    );
   }
 }

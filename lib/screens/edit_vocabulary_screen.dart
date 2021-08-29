@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:remember/models/vocabulary.dart';
-import 'package:remember/providers/dictionary.dart';
 
+import '../providers/dictionary.dart';
+import '../models/vocabulary.dart';
 import '../config.dart';
 
 class EditVocabularyScreen extends StatefulWidget {
@@ -76,24 +76,24 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
             borderSide: BorderSide(color: textColor, width: 1)),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-                color: config.isDarkTheme ? Colors.amber : Colors.orange,
+                color: config.isDarkMode ? Colors.amber : Colors.orange,
                 width: 1.5)),
       );
     }
 
     return Scaffold(
-        backgroundColor: config.isDarkTheme ? Color(0xff2f2b53) : null,
+        backgroundColor: config.isDarkMode ? Color(0xff2f2b53) : null,
         appBar: AppBar(
           title: Text(
             'Edit vocabulary',
             style: TextStyle(fontFamily: 'Sarabun'),
           ),
-          backgroundColor: config.isDarkTheme ? Color(0xff232245) : null,
+          backgroundColor: config.isDarkMode ? Color(0xff232245) : null,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_new,
               size: 20,
-              color: config.isDarkTheme ? Colors.white : Color(0xff2f2b53),
+              color: config.isDarkMode ? Colors.white : Color(0xff2f2b53),
             ),
             onPressed: () {
               Navigator.of(context).pop(false);
@@ -125,7 +125,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
                     style: TextStyle(fontFamily: 'Sarabun', color: textColor),
                     decoration: _inputDecoration('English'),
                     cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
+                        config.isDarkMode ? Colors.amber : Colors.orange,
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_viFocusNode);
@@ -153,7 +153,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
                     style: TextStyle(fontFamily: 'Sarabun', color: textColor),
                     decoration: _inputDecoration('Vietnamese'),
                     cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
+                        config.isDarkMode ? Colors.amber : Colors.orange,
                     textInputAction: TextInputAction.next,
                     focusNode: _viFocusNode,
                     onFieldSubmitted: (_) {
@@ -182,7 +182,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
                     style: TextStyle(fontFamily: 'Sarabun', color: textColor),
                     decoration: _inputDecoration('English 2'),
                     cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
+                        config.isDarkMode ? Colors.amber : Colors.orange,
                     textInputAction: TextInputAction.next,
                     focusNode: _en2FocusNode,
                     onFieldSubmitted: (_) {
@@ -205,7 +205,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
                     style: TextStyle(fontFamily: 'Sarabun', color: textColor),
                     decoration: _inputDecoration('Vietnamese 2'),
                     cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
+                        config.isDarkMode ? Colors.amber : Colors.orange,
                     textInputAction: TextInputAction.next,
                     focusNode: _vi2FocusNode,
                     onFieldSubmitted: (_) {
@@ -228,7 +228,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
                     style: TextStyle(fontFamily: 'Sarabun', color: textColor),
                     decoration: _inputDecoration('Extra'),
                     cursorColor:
-                        config.isDarkTheme ? Colors.amber : Colors.orange,
+                        config.isDarkMode ? Colors.amber : Colors.orange,
                     textInputAction: TextInputAction.done,
                     focusNode: _extraFocusNode,
                     onFieldSubmitted: (_) {
