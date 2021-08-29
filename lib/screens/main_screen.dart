@@ -66,6 +66,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('main build');
     final config = Provider.of<Config>(context);
     final dictionary = Provider.of<Dictionary>(context);
 
@@ -112,7 +113,6 @@ class _MainScreenState extends State<MainScreen> {
           barrierColor: Colors.black26);
     }
 
-    print('main build');
     dictionary.syncWithServer();
     return Scaffold(
       body: Stack(

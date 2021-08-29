@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import './my_dictionary_screen.dart';
@@ -14,10 +13,10 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context);
-    final textColor = config.isDarkTheme ? Colors.white : Color(0xff121628);
+    final textColor = config.isDarkMode ? Colors.white : Color(0xff121628);
 
     return Scaffold(
-      backgroundColor: config.isDarkTheme ? Color(0xff232245) : Colors.white,
+      backgroundColor: config.isDarkMode ? Color(0xff232245) : Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -27,7 +26,7 @@ class SettingsScreen extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 20,
-                color: config.isDarkTheme ? Colors.white : Color(0xff2f2b53),
+                color: config.isDarkMode ? Colors.white : Color(0xff2f2b53),
               ),
               splashColor: Colors.transparent,
               onPressed: () {
@@ -38,7 +37,7 @@ class SettingsScreen extends StatelessWidget {
             snap: true,
             expandedHeight: 200,
             flexibleSpace: Container(
-              color: config.isDarkTheme ? Color(0xff232245) : Colors.white,
+              color: config.isDarkMode ? Color(0xff232245) : Colors.white,
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: FittedBox(
@@ -66,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
                           'About',
                           style: TextStyle(
                               fontFamily: 'Sarabun',
-                              color: config.isDarkTheme
+                              color: config.isDarkMode
                                   ? Colors.white
                                   : Color(0xff1a1d2f),
                               fontSize: 26,
@@ -93,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
                                   'Phuong Nam',
                                   style: TextStyle(
                                       fontFamily: 'Sarabun',
-                                      color: config.isDarkTheme
+                                      color: config.isDarkMode
                                           ? Colors.white
                                           : Color(0xff1a1d2f),
                                       fontSize: 20,
@@ -105,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
                                     'fb.com/NamAntoneus',
                                     style: TextStyle(
                                         fontFamily: 'Sarabun',
-                                        color: config.isDarkTheme
+                                        color: config.isDarkMode
                                             ? Colors.white54
                                             : Colors.black54,
                                         fontSize: 17,
@@ -124,7 +123,7 @@ class SettingsScreen extends StatelessWidget {
                           'Settings',
                           style: TextStyle(
                               fontFamily: 'Sarabun',
-                              color: config.isDarkTheme
+                              color: config.isDarkMode
                                   ? Colors.white
                                   : Color(0xff1a1d2f),
                               fontSize: 26,

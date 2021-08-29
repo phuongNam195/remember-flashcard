@@ -64,17 +64,17 @@ class Config with ChangeNotifier {
 
   final List<AppTheme> _listAppTheme = [
     AppTheme(
-        id: '01',
+        id: '00',
         name: 'Dark',
         textColor: Colors.white,
         solid: Color.fromRGBO(3, 3, 3, 1)),
     AppTheme(
-        id: '02',
+        id: '01',
         name: 'Light',
         textColor: Colors.black,
         solid: Color.fromRGBO(252, 252, 252, 1)),
     AppTheme(
-        id: '03',
+        id: '02',
         name: 'Sel',
         textColor: Colors.white,
         gradient: LinearGradient(colors: [
@@ -82,7 +82,7 @@ class Config with ChangeNotifier {
           Color.fromRGBO(0, 56, 106, 1)
         ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
     AppTheme(
-        id: '04',
+        id: '03',
         name: 'Dusk',
         textColor: Colors.white,
         gradient: LinearGradient(
@@ -90,14 +90,14 @@ class Config with ChangeNotifier {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight)),
     AppTheme(
-        id: '05',
+        id: '04',
         name: 'Nimvelo',
         textColor: Colors.white,
         gradient: LinearGradient(
           colors: [Color(0xff314755), Color(0xff26a0da)],
         )),
     AppTheme(
-        id: '06',
+        id: '05',
         name: 'Anamisar',
         textColor: Colors.white,
         gradient: LinearGradient(
@@ -105,19 +105,19 @@ class Config with ChangeNotifier {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight)),
     AppTheme(
-        id: '07',
+        id: '06',
         name: 'Leafs',
         textColor: Colors.white,
         imageUrl:
             'https://images.pexels.com/photos/3573841/pexels-photo-3573841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
     AppTheme(
-        id: '08',
+        id: '07',
         name: 'Twilight',
         textColor: Colors.white,
         imageUrl:
             'https://images.pexels.com/photos/306344/pexels-photo-306344.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
     AppTheme(
-        id: '09',
+        id: '08',
         name: 'Plant',
         textColor: Colors.black,
         imageUrl:
@@ -129,7 +129,6 @@ class Config with ChangeNotifier {
   AppTheme get theme => _listAppTheme[_selectedTheme];
   List<AppTheme> get allThemes => [..._listAppTheme];
   int get currentThemeIndex => _selectedTheme;
-  // bool get isLightTheme => _listAppTheme[_selectedTheme].textColor == Colors.black;
   bool get isDarkTheme =>
       _listAppTheme[_selectedTheme].textColor == Colors.white;
   bool get isDarkMode => _selectedTheme == 0;
@@ -140,6 +139,7 @@ class Config with ChangeNotifier {
     } else {
       _selectedTheme = _currentUndarkTheme;
     }
+    print(_selectedTheme);
     notifyListeners();
     exportToLocal();
   }
