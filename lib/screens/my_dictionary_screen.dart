@@ -79,12 +79,12 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context, listen: false);
-    final appbarColor = config.isDarkTheme
+    final appbarColor = config.isDarkMode
         ? Color(0xff1b1b38)
         : (_isArchiveDict ? Color(0xff5c3d2e) : null);
 
     return Scaffold(
-        backgroundColor: config.isDarkTheme ? Color(0xff232245) : null,
+        backgroundColor: config.isDarkMode ? Color(0xff232245) : null,
         appBar: AppBar(
           backgroundColor: appbarColor,
           title: Text(
@@ -151,7 +151,9 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                             return VocabularyItem(
                               id: list[i].id,
                               title: list[i].en,
-                              textColor: config.theme.textColor,
+                              textColor: config.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
                               isArchived: _isArchiveDict,
                               onChanged: () {
                                 setState(() {});

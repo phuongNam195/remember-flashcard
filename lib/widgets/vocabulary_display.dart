@@ -61,12 +61,29 @@ class VocabularyDisplay extends StatelessWidget {
       }
 
       final onlyPrimaryWord = Provider.of<Config>(context).onlyPrimaryWord;
+      if (onlyPrimaryWord) {
+        return Center(
+          child: Container(
+            height: (MediaQuery.of(context).size.height - 10) * 2 / 7,
+            child: FittedBox(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                _vocab.en,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1!
+                    .copyWith(color: _textColor),
+              ),
+            ),
+          ),
+        );
+      }
       return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(flex: 1),
-            (_vocab.en2 != null && !onlyPrimaryWord)
+            (_vocab.en2 != null)
                 ? Expanded(
                     flex: 1,
                     child: FittedBox(
@@ -94,21 +111,19 @@ class VocabularyDisplay extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            !onlyPrimaryWord
-                ? Expanded(
-                    flex: 1,
-                    child: FittedBox(
-                      child: Text(
-                        _vocab.vi,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline2!
-                            .copyWith(color: _textColor.withOpacity(0.3)),
-                      ),
-                    ),
-                  )
-                : Spacer(),
-            (_vocab.vi2 != null && !onlyPrimaryWord)
+            Expanded(
+              flex: 1,
+              child: FittedBox(
+                child: Text(
+                  _vocab.vi,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline2!
+                      .copyWith(color: _textColor.withOpacity(0.3)),
+                ),
+              ),
+            ),
+            (_vocab.vi2 != null)
                 ? Expanded(
                     flex: 1,
                     child: FittedBox(
@@ -123,7 +138,7 @@ class VocabularyDisplay extends StatelessWidget {
                   )
                 : Spacer(),
             Spacer(flex: 1),
-            (_vocab.extra != null && !onlyPrimaryWord)
+            (_vocab.extra != null)
                 ? Expanded(
                     flex: 1,
                     child: Padding(
