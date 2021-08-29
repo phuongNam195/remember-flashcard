@@ -17,16 +17,6 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   late final Dictionary dictionary;
   bool _isArchiveDict = false;
   bool _isLoaded = false;
-  // final ScrollController controller = ScrollController();
-  // final perPage = 20;
-  // late int currLength;
-
-  @override
-  void initState() {
-    // currLength = perPage;
-    // controller.addListener(_scrollListener);
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -47,14 +37,6 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
       }
 
       loadData();
-
-      // Future.delayed(Duration(milliseconds: 300)).then((_) {
-      //   Provider.of<Dictionary>(context, listen: false).fetchAndSetData();
-      // }).then((_) {
-      //   setState(() {
-      //     _isLoaded = true;
-      //   });
-      // });
     }
 
     super.didChangeDependencies();
@@ -62,19 +44,8 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
 
   @override
   void dispose() {
-    // controller.removeListener(_scrollListener);
     super.dispose();
   }
-
-  // void _scrollListener() {
-  //   if (controller.position.extentAfter < 200) {
-  //     final dictionary = Dictionary();
-  //     setState(() {
-  //       currLength += perPage;
-  //       if (currLength > dictionary.length) currLength = dictionary.length;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,15 +107,13 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                           child: Text(
                         'Nothing!',
                         style: Theme.of(context).textTheme.headline1!.copyWith(
-                            color: config.theme.textColor, fontSize: 24),
+                            color: config.isDarkMode ? Colors.white : Colors.black, fontSize: 24),
                       ));
                     return RawScrollbar(
-                      thumbColor: config.theme.textColor.withOpacity(0.2),
+                      thumbColor: (config.isDarkMode ? Colors.white : Colors.black).withOpacity(0.2),
                       radius: Radius.circular(3),
                       thickness: 8,
                       child: ListView.builder(
-                          // controller: controller,
-                          // itemCount: currLength,
                           itemCount: list.length,
                           itemBuilder: (ctx, index) {
                             int i = list.length - index - 1;

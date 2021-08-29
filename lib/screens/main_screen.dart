@@ -30,8 +30,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void didChangeDependencies() {
-    // _focusNode = FocusNode();
-    // FocusScope.of(context).requestFocus(_focusNode);
     void prepare() async {
       await Provider.of<Config>(context, listen: false).importFromLocal();
       await Provider.of<Dictionary>(context, listen: false).loadData();
@@ -43,15 +41,6 @@ class _MainScreenState extends State<MainScreen> {
 
     if (_isLoaded == false) {
       prepare();
-
-      // _dictionary = Provider.of<Dictionary>(context);
-      // _dictionary.fetchAndSetData().then((_) {
-      //   _indexManager = IndexController();
-      //   _indexManager.next();
-      //   setState(() {
-      //     _isLoaded = true;
-      //   });
-      // });
     }
 
     super.didChangeDependencies();
@@ -83,20 +72,6 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _isBacked = true;
         });
-
-        // Future<void> _dem() async {
-        //   while (_time < 20) {
-        //     Future.delayed(const Duration(milliseconds: 50)).then((_) {
-        //       _time += 1;
-        //     });
-        //   }
-        //   _time = 0;
-        //   setState(() {
-        //     _isBacked = false;
-        //   });
-        // }
-
-        // _dem();
 
         Future.delayed(Duration(milliseconds: 400)).then((_) {
           setState(() {

@@ -150,36 +150,6 @@ class Dictionary with ChangeNotifier {
   }
 
   Future<void> syncWithServer() async {
-    // // delete duplicate elements
-    // _waitForAddVocabs = _waitForAddVocabs.toSet().toList();
-    // _waitForDeleteVocabs = _waitForDeleteVocabs.toSet().toList();
-    // _waitForUpdateVocabs = _waitForUpdateVocabs.toSet().toList();
-    // // delete 'deleted elements'
-    // int i = 0;
-    // while (i < _waitForDeleteVocabs.length) {
-    //   final id = _waitForDeleteVocabs[i];
-    //   final j = _waitForAddVocabs.indexOf(id);
-    //   final k = _waitForUpdateVocabs.indexOf(id);
-    //   if (j != -1) {
-    //     _waitForAddVocabs.removeAt(j);
-    //     _waitForDeleteVocabs.removeAt(i);
-    //   }
-    //   if (k != -1) {
-    //     _waitForUpdateVocabs.removeAt(k);
-    //   }
-    //   i++;
-    // }
-    // // merge 'added element' vs. 'updated element'
-    // i = 0;
-    // while (i < _waitForAddVocabs.length) {
-    //   final id = _waitForAddVocabs[i];
-    //   final j = _waitForUpdateVocabs.indexOf(id);
-    //   if (j != -1) {
-    //     _waitForUpdateVocabs.removeAt(j);
-    //   }
-    //   i++;
-    // }
-
     try {
       // ADD
       final urlForAdd = Uri.parse(Config.DOMAIN_DB + 'dictionary.json');

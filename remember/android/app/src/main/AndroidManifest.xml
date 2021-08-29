@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.remember">
+    package="com.antoneus195.remember.remember">
    <application
-        android:label="Remember"
+        android:label="remember"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

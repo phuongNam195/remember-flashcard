@@ -1,5 +1,3 @@
-// Đống hổ lốn
-
 import 'dart:math';
 
 import '../providers/dictionary.dart';

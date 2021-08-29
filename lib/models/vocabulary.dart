@@ -23,13 +23,6 @@ class Vocabulary {
         this.en2 = vocab['en2'],
         this.vi2 = vocab['vi2'],
         this.extra = vocab['extra'];
-  //  {
-  //   String? en2;
-  //   String? vi2;
-  //   if (vocab.containsKey('en2')) en2 = vocab['en2'];
-  //   if (vocab.containsKey('vi2')) en2 = vocab['vi2'];
-  //   return Vocabulary(id: id, en: vocab['en'], vi: vocab['vi'], en2: en2, vi2: vi2);
-  // }
 
   Map toMap() {
     Map<String, dynamic> result = {
