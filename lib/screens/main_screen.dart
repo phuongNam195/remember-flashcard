@@ -86,7 +86,6 @@ class _MainScreenState extends State<MainScreen> {
       FocusScope.of(context).requestFocus(_focusNode);
     }
 
-    print('main build');
     return Title(
       color: Colors.blue,
       title: 'Remember',

@@ -37,7 +37,6 @@ class Dictionary with ChangeNotifier {
         _vocabs.add(vocab);
       });
       // notifyListeners();
-      print('fetched');
     } catch (error) {
       print(error);
     }

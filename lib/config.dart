@@ -10,7 +10,7 @@ class Config with ChangeNotifier {
   Config._internal();
 
   static const DOMAIN_DB =
-      'https://toihocflutter-default-rtdb.asia-southeast1.firebasedatabase.app/';
+      'https://remember-antoneus-default-rtdb.asia-southeast1.firebasedatabase.app/';
 
   bool onlyPrimaryWord = false;
   bool waitLongPressKey = false;

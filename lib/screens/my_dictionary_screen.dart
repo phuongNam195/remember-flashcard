@@ -47,6 +47,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context, listen: false);
+    final textColor = config.isDarkMode ? Colors.white : Colors.black;
     return RawKeyboardListener(
       autofocus: true,
       focusNode: _focusNode,
@@ -108,11 +109,13 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                       return Center(
                           child: Text(
                         'Nothing!',
-                        style: Theme.of(context).textTheme.headline1!.copyWith(
-                            color: config.theme.textColor, fontSize: 24),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1!
+                            .copyWith(color: textColor, fontSize: 24),
                       ));
                     return RawScrollbar(
-                      thumbColor: config.theme.textColor.withOpacity(0.2),
+                      thumbColor: textColor.withOpacity(0.2),
                       radius: Radius.circular(3),
                       thickness: 8,
                       child: ListView.builder(
@@ -124,7 +127,7 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
                             return VocabularyItem(
                               id: list[i].id,
                               title: list[i].en,
-                              textColor: config.theme.textColor,
+                              textColor: textColor,
                               onChanged: () {
                                 setState(() {});
                               },
