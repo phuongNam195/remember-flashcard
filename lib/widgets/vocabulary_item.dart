@@ -23,7 +23,7 @@ class VocabularyItem extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width > 550 ? 550 : null,
         child: Dismissible(
-          key: UniqueKey(),
+          key: ValueKey(id),
           child: Column(
             children: [
               Padding(
@@ -77,9 +77,9 @@ class VocabularyItem extends StatelessWidget {
           },
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.endToStart) {
-              return showDialog(
+              return await showDialog(
                   context: context,
-                  builder: (ctx) => AlertDialog(
+                  builder: (BuildContext context) => AlertDialog(
                         title: Text(
                           'Confirm',
                           style: TextStyle(
@@ -121,7 +121,6 @@ class VocabularyItem extends StatelessWidget {
                         ],
                       ));
             }
-            return true;
           },
         ),
       ),

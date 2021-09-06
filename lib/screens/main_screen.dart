@@ -24,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void didChangeDependencies() {
-    // FocusScope.of(context).requestFocus(_focusNode);
     void loadData() async {
       await Provider.of<Dictionary>(context, listen: false).fetchAndSetData();
       _indexManager = IndexController();
@@ -81,9 +80,9 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     void goToSettings() {
-      _focusNode.unfocus();
+      // _focusNode.unfocus();
       Navigator.of(context).pushNamed(SettingsScreen.routeName);
-      FocusScope.of(context).requestFocus(_focusNode);
+      // FocusScope.of(context).requestFocus(_focusNode);
     }
 
     return Title(

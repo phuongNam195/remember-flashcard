@@ -85,8 +85,8 @@ class Dictionary with ChangeNotifier {
     final indexController = IndexController();
     if (indexController.currentId == id) {
       indexController.next();
-      notifyListeners();
     }
+    notifyListeners();
     final url = Uri.parse(Config.DOMAIN_DB + 'dictionary/$id.json');
     try {
       final response = await http.delete(url);

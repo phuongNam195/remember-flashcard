@@ -112,7 +112,7 @@ class SettingsScreen extends StatelessWidget {
                                   SizedBox(height: 4),
                                   FittedBox(
                                     child: Text(
-                                      'fb.com/NamAntoneus',
+                                      'Version: 1.2.0',
                                       style: TextStyle(
                                           fontFamily: 'Sarabun',
                                           color: config.isDarkMode

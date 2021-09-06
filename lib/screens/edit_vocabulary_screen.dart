@@ -63,7 +63,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
   @override
   Widget build(BuildContext context) {
     final config = Provider.of<Config>(context, listen: false);
-    final textColor = config.theme.textColor;
+    final textColor = config.isDarkMode ? Colors.white : Colors.black;
 
     InputDecoration _inputDecoration(String label) {
       return InputDecoration(
@@ -93,7 +93,7 @@ class _EditVocabularyScreenState extends State<EditVocabularyScreen> {
             icon: Icon(
               Icons.arrow_back_ios_new,
               size: 20,
-              color: config.isDarkMode ? Colors.white : Color(0xff2f2b53),
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.of(context).pop(false);

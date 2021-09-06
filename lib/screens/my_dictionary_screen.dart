@@ -82,15 +82,15 @@ class _MyDictionaryScreenState extends State<MyDictionaryScreen> {
               child: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  _focusNode.unfocus();
+                  // _focusNode.unfocus();
                   Navigator.of(context)
                       .pushNamed(EditVocabularyScreen.routeName)
                       .then((isChanged) {
                     if (isChanged as bool) {
                       setState(() {});
                     }
+                    // FocusScope.of(context).requestFocus(_focusNode);
                   });
-                  FocusScope.of(context).requestFocus(_focusNode);
                 },
               ),
             ),
