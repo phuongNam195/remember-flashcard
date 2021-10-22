@@ -14,3 +14,5 @@ https://remember-antoneus.firebaseapp.com
 ![2](https://user-images.githubusercontent.com/90912187/138373319-a93dcbac-c7bb-4735-bf4d-b967e807585f.jpg)
 ## Tool
 Flutter, Firebase realtime database
+## Design idea
+[Dribbble/850 words](https://dribbble.com/shots/4647822-850-words-iOS-app)
