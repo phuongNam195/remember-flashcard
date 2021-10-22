@@ -1,16 +1,11 @@
-# remember
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Remember
+A simple vocabulary flashcards (for me)
+## Web preview
+https://remember-antoneus.firebaseapp.com
+## Usage
+- Tap/Right arrow/Space or Enter to see the next card
+- Left arrow or Double tap on left-bottom corner to see the previous card
+- Press 'S' or Double tap on right-bottom corner to open Settings
+- Press 'T' or Long tap moon icon to change theme
+## Tool
+Flutter, Firebase realtime database
