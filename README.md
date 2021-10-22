@@ -1,5 +1,5 @@
 # Remember
-A simple vocabulary flashcards (for me)
+A simple vocabulary flashcards (for myself)
 ## Web preview
 https://remember-antoneus.firebaseapp.com
 ## Usage
