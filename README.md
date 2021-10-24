@@ -1,6 +1,6 @@
 # Remember
 A simple vocabulary flashcards (for myself)
-## Web preview
+## Web demo
 https://remember-antoneus.firebaseapp.com
 ## Usage
 - Tap/Right arrow/Space or Enter to see the next card
